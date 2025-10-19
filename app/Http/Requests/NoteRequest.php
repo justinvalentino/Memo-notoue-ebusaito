@@ -22,7 +22,11 @@ class NoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => ['required', 'string', 'max:255'],
+            'content' => ['nullable', 'string'],
+            'categories_id' => ['nullable', 'exists:categories,id'], 
+            'is_archived' => ['boolean'],
+            'is_deleted' => ['boolean'],
         ];
     }
 }

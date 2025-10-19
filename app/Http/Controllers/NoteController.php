@@ -12,16 +12,27 @@ class NoteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $notes = auth()->user()->notes()
+        $notesQuery = auth()->user()->notes()
                      ->where('is_archived', false)
-                     ->where('is_deleted', false)
-                     ->with('category')
-                     ->latest()
-                     ->get();
+                     ->where('is_deleted', false);
 
-        $categories = Category::all();
+        // user type sesuatu di search box
+        if ($request->filled('search')) {
+            $searchTerm = $request->input('search');
+            
+            // filterkan query
+            $notesQuery->where(function ($query) use ($searchTerm) {
+                $query->where('title', 'like', "%{$searchTerm}%")      // search title
+                    ->orWhere('content', 'like', "%{$searchTerm}%"); // search content
+            });
+        }
+        
+        // list of notes atau filter search result
+        $notes = $notesQuery->with('category')->latest()->get();
+
+        $categories = \App\Models\Category::all();
         return view('notes.index', compact('notes', 'categories'));
     }
 
