@@ -1,0 +1,1 @@
+// melihatkna satu note yang tekan
