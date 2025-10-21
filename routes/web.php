@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
         'update' => 'notes.update',
         'destroy' => 'notes.destroy',
     ]);
+
+    // added route for archiving note
+    Route::patch('/notes/{note}/archive', [NoteController::class, 'archive'])->name('notes.archive');
 });
 
 require __DIR__.'/auth.php';

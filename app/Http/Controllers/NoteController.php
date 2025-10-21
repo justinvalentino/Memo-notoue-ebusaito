@@ -113,4 +113,17 @@ class NoteController extends Controller
         
         return redirect()->route('notes.index')->with('success', 'Catatan dipindahkan ke TRASH.');
     }
+
+    public function archive(Note $note)
+    {
+        // authorization: making sure bahwa user memiliki note
+        if ($note->users_id !== auth()->id()) {
+            abort(403);
+        }
+
+        // update status note menjadi archived
+        $note->update(['is_archived' => true]);
+
+        return redirect()->route('notes.index')->with('success', 'Note sukses archived');
+    }
 }
