@@ -5,7 +5,7 @@ use App\Http\Controllers\NoteController;        // importing NoteController
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('/auth/login');
 });
 
 Route::get('/dashboard', function () {
@@ -16,6 +16,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::patch('/notes/{note}/archive', [NoteController::class, 'archive'])->name('notes.archive');
+    Route::get('/notes/trash', [NoteController::class, 'trash'])->name('notes.trash');
+    Route::patch('/notes/{note}/restore', [NoteController::class, 'restore'])->name('notes.restore');
 
     Route::resource('notes', NoteController::class)->names([
         'index' => 'notes.index',
@@ -28,7 +32,6 @@ Route::middleware('auth')->group(function () {
     ]);
 
     // added route for archiving note
-    Route::patch('/notes/{note}/archive', [NoteController::class, 'archive'])->name('notes.archive');
 });
 
 require __DIR__.'/auth.php';

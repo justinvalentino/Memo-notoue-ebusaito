@@ -8,14 +8,12 @@
         </h2>
     </x-slot>
 
-    {{-- MAIN CONTENT AREA --}}
+    {{-- main area --}}
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            {{-- Form Container --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 
-                {{-- Form Start --}}
                 <form action="{{ route('notes.store') }}" method="POST" class="p-6 lg:p-8">
                     @csrf
 

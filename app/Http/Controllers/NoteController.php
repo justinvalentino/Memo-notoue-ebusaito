@@ -18,7 +18,9 @@ class NoteController extends Controller
     {
         $notesQuery = auth()->user()->notes()
                      ->where('is_archived', false)
-                     ->where('is_deleted', false);
+                     ->where('is_deleted', false)
+                     ->whereNotNull('title')
+                     ->where('title', '!=', '');
 
         // user type sesuatu di search box
         if ($request->filled('search')) {
@@ -109,6 +111,13 @@ class NoteController extends Controller
         if ($note->users_id !== auth()->id()) {
             abort(403, 'Unauthorized action.');
         }
+
+            //to delete permanently from trash 
+        if ($note->is_archived){
+            $note->forceDelete();
+
+            return redirect()->route('notes.trash')->with('success', 'Note deleted permanently.');
+        }
         
         // update note ke Trash
         $note->update(['is_deleted' => true]); 
@@ -127,5 +136,27 @@ class NoteController extends Controller
         $note->update(['is_archived' => true]);
 
         return redirect()->route('notes.index')->with('success', 'Note sukses archived');
+    }
+
+    public function trash ()
+    {
+        $archivednotes = auth()->user()->notes()
+            ->where('is_archived', true)
+            ->latest()
+            ->get();
+
+            //to show archived notes in trash
+        return view('notes.trash', ['notes' => $archivednotes]);
+    }
+
+    public function restore(Note $note){
+        
+        if ($note->users_id !== auth()->id()) {
+            abort(403);
+        }
+            //to change note back to NOT archived
+        $note->update(['is_archived' => false]);
+
+        return redirect()->route('notes.trash')->with('success', 'Notes restored succesfully');
     }
 }

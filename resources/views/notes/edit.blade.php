@@ -2,26 +2,23 @@
 
 <x-app-layout>
 
-    {{-- HEADER SLOT --}}
+    <!-- to show which note is being edited -->
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             Edit Note: {{ $note->title }}
         </h2>
     </x-slot>
 
-    {{-- MAIN CONTENT AREA --}}
+    <!-- div for main area -->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            {{-- Form Container --}}
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg">
                 
-                {{-- Form Start --}}
-                {{-- 🛑 1. Action includes the note, Method is POST 🛑 --}}
+
                 <form action="{{ route('notes.update', $note) }}" method="POST" class="p-6 lg:p-8">
                     
                     @csrf
-                    {{-- 🛑 2. REQUIRED: Tells Laravel to treat POST as PUT/PATCH 🛑 --}}
                     @method('PUT') 
 
                     {{-- Title Input --}}
@@ -34,7 +31,7 @@
                             placeholder="Enter a title for your note"
                             class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-lg shadow-sm focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 @error('title') border-red-500 @enderror" 
                             
-                            {{-- 🛑 3. Pre-fill the current or old value 🛑 --}}
+                            {{-- keep old note title --}}
                             value="{{ old('title', $note->title) }}" 
                             required
                         />
@@ -43,7 +40,7 @@
                         @enderror
                     </div>
 
-                    {{-- Body Input (Textarea) --}}
+                    {{-- Body Input --}}
                     <div class="mb-8">
                         <label for="body" class="block font-medium text-lg text-gray-700 dark:text-gray-300 mb-2">Note Content</label>
                         <textarea
