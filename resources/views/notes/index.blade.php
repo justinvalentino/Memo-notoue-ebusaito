@@ -63,7 +63,7 @@
                         @csrf
                         @method('PATCH')
                         <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 text-sm rounded-md transition duration-150 ease-in-out">
-                            Archive
+                            Trash
                         </button>
                     </form>
                     
