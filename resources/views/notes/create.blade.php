@@ -46,10 +46,58 @@
                             required
                         >{{ old('content') }}</textarea>
                         @error('content')
-                            <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    
+                    {{-- Category Input Section --}}
+                    <div class="mb-6">
+                        <label for="categories_id" class="block font-medium text-lg text-gray-700 dark:text-gray-300 mb-2">
+                            Category (Optional)
+                        </label>
 
+                        <div class="flex gap-2 items-center">
+                            {{-- dropdown to show categories --}}
+                            <select 
+                                name="categories_id" 
+                                id="categories_id" 
+                                class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-lg shadow-sm focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600"
+                            >
+                                <option value="">-- No Category --</option> 
+                                
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}"
+                                        {{-- Check if this is the selected category (for edit page only) --}}
+                                        @isset($note)
+                                            {{ old('categories_id', $note->categories_id) == $category->id ? 'selected' : '' }}
+                                        @endisset
+                                        {{-- Check for old input (for create page persistence) --}}
+                                        @empty($note)
+                                            {{ old('categories_id') == $category->id ? 'selected' : '' }}
+                                        @endempty
+                                    >
+                                        {{ $category->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            
+                            {{-- redirect button to manage categories --}}
+                            <div class="flex-shrink-0">
+                                <a href="{{ route('categories.index') }}" 
+                                    class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-lg font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 transition ease-in-out duration-150"
+                                    title="Manage Categories (Add, Delete)"
+                                >
+                                    +
+                                </a>
+                            </div>
+                        </div>
+                        
+                        @error('categories_id')
+                            <p class="text-sm text-red-600 dark:text-red-400 mt-2">{{ $message }}</p>
+                        @enderror
+
+                    </div>
+                
                     {{-- Action Buttons --}}
                     <div class="flex justify-end space-x-4">
                         

@@ -54,10 +54,14 @@ class NoteController extends Controller
      */
     public function store(NoteRequest $request)
     {
-        $validatedData = $request->validated();
-        $validatedData['users_id'] = auth()->id();
+        $data = $request->validated();
         
-        Note::create($validatedData); 
+        $categoryId = $request->filled('categories_id') ? $request->categories_id : null;
+
+        $data['categories_id'] = $categoryId;
+        $data['users_id'] = auth()->id();
+
+        \App\Models\Note::create($data); 
 
         return redirect()->route('notes.index')->with('success', 'Catatan berhasil ditambahkan!');
     }
@@ -97,8 +101,13 @@ class NoteController extends Controller
             abort(403, 'Unauthorized action.');
         }
         
+        $data = $request->validated();
+    
+        // save the category
+        $data['categories_id'] = $request->filled('categories_id') ? $request->categories_id : null;
+    
         // update data dengan data tervalidated
-        $note->update($request->validated());
+        $note->update($data);
 
         return redirect()->route('notes.index')->with('success', 'Catatan berhasil diperbarui!');
     }
@@ -159,4 +168,5 @@ class NoteController extends Controller
 
         return redirect()->route('notes.trash')->with('success', 'Notes restored succesfully');
     }
+
 }

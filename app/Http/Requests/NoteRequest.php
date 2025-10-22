@@ -24,7 +24,7 @@ class NoteRequest extends FormRequest
         return [
             'title' => ['required', 'string', 'max:255'],
             'content' => ['nullable', 'string'],
-            'categories_id' => ['nullable', 'exists:categories,id'], 
+            'categories_id' => ['nullable', 'exists:categories,id'],
             'is_archived' => ['boolean'],
             'is_deleted' => ['boolean'],
         ];
