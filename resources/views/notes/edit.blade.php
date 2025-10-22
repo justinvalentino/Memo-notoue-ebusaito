@@ -71,11 +71,9 @@
                                 
                                 @foreach ($categories as $category)
                                     <option value="{{ $category->id }}"
-                                        {{-- Check if this is the selected category (for edit page only) --}}
                                         @isset($note)
                                             {{ old('categories_id', $note->categories_id) == $category->id ? 'selected' : '' }}
                                         @endisset
-                                        {{-- Check for old input (for create page persistence) --}}
                                         @empty($note)
                                             {{ old('categories_id') == $category->id ? 'selected' : '' }}
                                         @endempty

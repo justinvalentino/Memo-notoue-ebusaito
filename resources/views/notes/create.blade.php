@@ -44,10 +44,7 @@
                             placeholder="Start writing your note here..."
                             class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-lg shadow-sm focus:border-blue-500 dark:focus:border-blue-600 focus:ring-blue-500 dark:focus:ring-blue-600 @error('body') border-red-500 @enderror" 
                             required
-                        >{{ old('content') }}</textarea>
-                        @error('content')
-                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
-                        @enderror
+                        >{{ old('content') }}</textarea>    
                     </div>
                     
                     {{-- Category Input Section --}}
@@ -66,16 +63,7 @@
                                 <option value="">-- No Category --</option> 
                                 
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{-- Check if this is the selected category (for edit page only) --}}
-                                        @isset($note)
-                                            {{ old('categories_id', $note->categories_id) == $category->id ? 'selected' : '' }}
-                                        @endisset
-                                        {{-- Check for old input (for create page persistence) --}}
-                                        @empty($note)
-                                            {{ old('categories_id') == $category->id ? 'selected' : '' }}
-                                        @endempty
-                                    >
+                                    <option value="{{ $category->id }}">
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
